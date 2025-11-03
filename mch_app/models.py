@@ -1,105 +1,100 @@
 from mch_app import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-# 1. IMPORTAR DATE, DATETIME, ETC.
-from datetime import date, datetime
+from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Usuario.query.get(int(user_id))
+    """Callback do Flask-Login para carregar um usuário pelo ID."""
+    return db.session.get(User, int(user_id))
 
-class Usuario(UserMixin, db.Model):
+class User(UserMixin, db.Model):
+    """Modelo de Usuário."""
+    __tablename__ = 'user'
+    
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, index=True, nullable=False)
     password_hash = db.Column(db.String(256))
-    data_nascimento = db.Column(db.Date)
-    telefone = db.Column(db.String(20))
-    bloco = db.Column(db.String(50))
-    apartamento = db.Column(db.String(10))
+    birth_date = db.Column(db.Date, nullable=False)
+    phone = db.Column(db.String(20))
+    building_block = db.Column(db.String(50)) # Ex: "Bloco A - Lírio"
+    apartment_number = db.Column(db.String(10))
     
-    # --- RELACIONAMENTOS ATIVADOS ---
-    
-    # Campo para o ID do cliente no Stripe (MUITO IMPORTANTE)
+    # --- Campos do Stripe ---
     stripe_customer_id = db.Column(db.String(120), unique=True, index=True)
-    
-    # Um usuário pode ter UMA assinatura
-    assinatura = db.relationship('Assinatura', backref='assinante', uselist=False, lazy='joined')
-    
-    # Um usuário pode ter VÁRIAS inscrições (para eventos avulsos)
-    inscricoes = db.relationship('Inscricao', backref='participante', lazy='dynamic')
-    # --- FIM DOS RELACIONAMENTOS ---
+    stripe_subscription_id = db.Column(db.String(120), unique=True, index=True)
+    subscription_status = db.Column(db.String(50), default='inativo') # Ex: inativo, ativo, pendente
+
+    # --- Relacionamentos ---
+    # `uselist=False` define um relacionamento um-para-um
+    subscription = db.relationship('Subscription', back_populates='user', uselist=False, cascade="all, delete-orphan")
+    rsvps = db.relationship('RSVP', back_populates='user', lazy='dynamic', cascade="all, delete-orphan")
+
+    def __repr__(self):
+        return f'<User {self.name} ({self.email})>'
 
     def set_password(self, password):
-# ... (código existente)...
+        """Gera e armazena o hash da senha."""
+        self.password_hash = generate_password_hash(password)
+
     def check_password(self, password):
-# ... (código existente)...
+        """Verifica se a senha fornecida corresponde ao hash."""
+        return check_password_hash(self.password_hash, password)
 
-    def __repr__(self):
-        return f'<Usuario {self.nome}>'
+    @property
+    def is_subscribed(self):
+        """Propriedade para verificar se o usuário tem uma assinatura ativa."""
+        return self.subscription_status == 'ativo'
 
-# --- NOVOS MODELOS ---
-
-class Evento(db.Model):
-    """Modelo para um churrasco (um evento no cronograma)."""
+class Event(db.Model):
+    """Modelo de Evento (O Churrasco)."""
+    __tablename__ = 'event'
+    
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(120), nullable=False)
-    data = db.Column(db.DateTime, nullable=False, index=True)
-    local = db.Column(db.String(200))
-    descricao = db.Column(db.Text)
-    
-    # Preços do Stripe (para facilitar a busca)
-    # Preço do evento avulso
-    stripe_price_id_avulso = db.Column(db.String(120)) 
-    
-    status = db.Column(db.String(50), default='Agendado') # Agendado, Realizado, Cancelado
-    
-    # Relacionamento: Quem se inscreveu neste evento
-    inscritos = db.relationship('Inscricao', backref='evento', lazy='dynamic')
+    date = db.Column(db.DateTime, nullable=False)
+    location = db.Column(db.String(200))
+    description = db.Column(db.Text)
+    status = db.Column(db.String(50), default='Agendado') # Ex: Agendado, Realizado, Cancelado
+    price_single_ticket = db.Column(db.Float, default=139.90)
+
+    # --- Relacionamentos ---
+    rsvps = db.relationship('RSVP', back_populates='event', lazy='dynamic', cascade="all, delete-orphan")
 
     def __repr__(self):
-        return f'<Evento {self.nome} em {self.data}>'
+        return f'<Event {self.description} em {self.date}>'
 
-
-class Assinatura(db.Model):
-    """Controla as assinaturas (mensal/anual) dos usuários."""
+class Subscription(db.Model):
+    """Modelo de Assinatura (Pagamento Recorrente)."""
+    __tablename__ = 'subscription'
+    
     id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False, unique=True)
-    
-    # ID da assinatura no Stripe (ex: sub_...)
-    stripe_subscription_id = db.Column(db.String(120), unique=True, index=True)
-    # ID do plano/preço que o usuário assinou (ex: price_...)
-    stripe_price_id = db.Column(db.String(120))
-    
-    # Status da assinatura (ex: 'active', 'canceled', 'past_due')
-    status = db.Column(db.String(50), default='incomplete')
-    
-    plano = db.Column(db.String(50)) # 'mensal' ou 'anual'
-    
-    # Data que a assinatura expira (Stripe nos informa)
-    data_expiracao = db.Column(db.DateTime)
-    
-    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
-    data_atualizacao = db.Column(db.DateTime, onupdate=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, index=True)
+    plan_name = db.Column(db.String(50)) # Ex: Mensal, Anual
+    start_date = db.Column(db.DateTime, default=datetime.utcnow)
+    end_date = db.Column(db.DateTime) # Nulo para planos ativos
+    status = db.Column(db.String(50), default='ativo') # Ex: ativo, cancelado, pendente
+
+    # --- Relacionamentos ---
+    user = db.relationship('User', back_populates='subscription')
 
     def __repr__(self):
-        return f'<Assinatura {self.usuario_id} - {self.status}>'
+        return f'<Subscription {self.user.name} - {self.plan_name}>'
 
-
-class Inscricao(db.Model):
-    """Controla os pagamentos AVULSOS para um evento específico."""
+class RSVP(db.Model):
+    """Modelo de Confirmação de Presença (RSVP)."""
+    __tablename__ = 'rsvp'
+    
     id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
-    evento_id = db.Column(db.Integer, db.ForeignKey('evento.id'), nullable=False)
-    
-    # ID do Pagamento no Stripe (ex: pi_...)
-    stripe_payment_intent_id = db.Column(db.String(120), unique=True, index=True)
-    
-    status_pagamento = db.Column(db.String(50), default='pending') # 'pending', 'succeeded', 'failed'
-    
-    data_pagamento = db.Column(db.DateTime)
-    valor = db.Column(db.Float)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, index=True)
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False, index=True)
+    payment_status = db.Column(db.String(50), default='Pendente') # Ex: Pago, Pendente, Isento (assinante)
+    confirmed_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # --- Relacionamentos ---
+    user = db.relationship('User', back_populates='rsvps')
+    event = db.relationship('Event', back_populates='rsvps')
 
     def __repr__(self):
-        return f'<Inscricao {self.usuario_id} no Evento {self.evento_id}>'
+        return f'<RSVP {self.user.name} @ {self.event.description}>'
 

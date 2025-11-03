@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    
+    <div class="text-center">
+        <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl font-display text-mch-dark">
+            Nossos Planos
+        </h2>
+        <p class="mt-4 text-lg text-gray-600">
+            Escolha o plano perfeito para você e junte-se ao Micachurras!
+        </p>
+    </div>
+
+    <!-- Container dos Cards -->
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <!-- Plano Avulso -->
+        <div class="border border-gray-200 rounded-lg shadow-lg p-8 flex flex-col bg-white">
+            <h3 class="text-2xl font-bold text-mch-dark text-center font-display">Passe Avulso</h3>
+            <p class="mt-4 text-center text-gray-600">Perfeito para convidados ou visitas.</p>
+            
+            <div class="mt-6 text-center">
+                <span class="text-5xl font-extrabold text-mch-accent">R$ 139</span>
+                <span class="text-xl font-medium text-gray-500">,90/evento</span>
+            </div>
+
+            <ul class="mt-8 space-y-4 text-gray-600">
+                <li class="flex items-center">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span class="ml-3">Acesso a 1 evento</span>
+                </li>
+                <li class="flex items-center">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span class="ml-3">Open Churrasco (Carnes + Acompanhamentos)</span>
+                </li>
+                <li class="flex items-center">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span class="ml-3">Open Chopp (Barril 60L)</span>
+                </li>
+            </ul>
+
+            <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="mt-auto pt-8">
+                <input type="hidden" name="price_id" value="{{ current_app.config.STRIPE_PRICE_ID_AVULSO }}">
+                <button type="submit" class="w-full bg-mch-accent text-white py-3 px-6 rounded-lg font-semibold hover:bg-opacity-90 transition duration-300">
+                    Comprar Agora
+                </button>
+            </form>
+        </div>
+
+        <!-- Plano Mensal (Sócio Micachurras) -->
+        <div class="border-2 border-mch-accent rounded-lg shadow-lg p-8 flex flex-col bg-white relative">
+            <span class="absolute top-0 right-0 -mt-3 mr-3 bg-mch-accent text-white text-sm font-bold px-3 py-1 rounded-full">MAIS POPULAR</span>
+            
+            <h3 class="text-2xl font-bold text-mch-dark text-center font-display">Sócio Micachurras</h3>
+            <p class="mt-4 text-center text-gray-600">Acesso garantido todo mês com desconto.</p>
+            
+            <div class="mt-6 text-center">
+                <span class="text-5xl font-extrabold text-mch-accent">R$ 119</span>
+                <span class="text-xl font-medium text-gray-500">,90/mês</span>
+            </div>
+
+            <ul class="mt-8 space-y-4 text-gray-600">
+                <li class="flex items-center">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span class="ml-3">Acesso a todos os eventos do mês</span>
+                </li>
+                <li class="flex items-center">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span class="ml-3">Open Churrasco (Carnes + Acompanhamentos)</span>
+                </li>
+                <li class="flex items-center">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span class="ml-3">Open Chopp (Barril 60L)</span>
+                </li>
+            </ul>
+
+            <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="mt-auto pt-8">
+                <input type="hidden" name="price_id" value="{{ current_app.config.STRIPE_PRICE_ID_MENSAL }}">
+                <button type="submit" class="w-full bg-mch-accent text-white py-3 px-6 rounded-lg font-semibold hover:bg-opacity-90 transition duration-300">
+                    Assinar Agora
+                </button>
+            </form>
+        </div>
+
+        <!-- Plano Anual (Sócio Fundador) -->
+        <div class="border border-gray-200 rounded-lg shadow-lg p-8 flex flex-col bg-white">
+            <h3 class="text-2xl font-bold text-mch-dark text-center font-display">Sócio Fundador</h3>
+            <p class="mt-4 text-center text-gray-600">O plano VIP. Pague 11, leve 12.</p>
+            
+            <div class="mt-6 text-center">
+                <span class="text-5xl font-extrabold text-mch-accent">R$ 107</span>
+                <span class="text-xl font-medium text-gray-500">,90/mês</span>
+            </div>
+            <p class="text-center text-gray-500 text-sm">(R$ 1294,80 cobrado anualmente)</p>
+
+            <ul class="mt-8 space-y-4 text-gray-600">
+                <li class="flex items-center">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span class="ml-3">Acesso a todos os eventos do ano</span>
+                </li>
+                <li class="flex items-center">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span class="ml-3">Open Churrasco (Carnes + Acompanhamentos)</span>
+                </li>
+                <li class="flex items-center">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span class="ml-3">Open Chopp (Barril 60L)</span>
+                </li>
+            </ul>
+
+            <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="mt-auto pt-8">
+                <input type="hidden" name="price_id" value="{{ current_app.config.STRIPE_PRICE_ID_ANUAL }}">
+                <button type="submit" class="w-full bg-mch-accent text-white py-3 px-6 rounded-lg font-semibold hover:bg-opacity-90 transition duration-300">
+                    Assinar Agora
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

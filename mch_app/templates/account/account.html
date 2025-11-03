@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex justify-center">
+    <div class="w-full max-w-lg bg-white p-8 rounded-2xl shadow-lg">
+        <h2 class="text-3xl font-bold text-center text-mch-dark mb-6">Minha Conta</h2>
+        
+        <!-- Formulário de Atualização de Perfil -->
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Atualizar Perfil</h3>
+        <form action="{{ url_for('account.my_account') }}" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            
+            <!-- Campo de Nome -->
+            <div class="mb-4">
+                {{ form.name.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                {{ form.name(class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-mch-primary", placeholder="Seu nome completo") }}
+                {% for error in form.name.errors %}
+                    <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Campo de Email -->
+            <div class="mb-4">
+                {{ form.email.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                {{ form.email(class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-mch-primary", placeholder="seuemail@dominio.com") }}
+                {% for error in form.email.errors %}
+                    <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Campo de Telefone -->
+            <div class="mb-4">
+                {{ form.phone.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                {{ form.phone(class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-mch-primary", placeholder="(XX) 9XXXX-XXXX") }}
+                {% for error in form.phone.errors %}
+                    <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Linha Dupla: Bloco e Apto -->
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                    {{ form.building_block.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                    {{ form.building_block(class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-mch-primary") }}
+                    {% for error in form.building_block.errors %}
+                        <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    {{ form.apartment_number.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                    {{ form.apartment_number(class="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-mch-primary", placeholder="Ex: 101") }}
+                    {% for error in form.apartment_number.errors %}
+                        <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Botão de Submit -->
+            <div class="flex items-center">
+                {{ form.submit(class="w-full bg-mch-primary hover:bg-mch-dark text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 cursor-pointer") }}
+            </div>
+        </form>
+
+        <hr class="my-8 border-gray-300">
+
+        <!-- Gerenciamento de Assinatura -->
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Gerenciar Assinatura</h3>
+        <p class="text-gray-600 mb-4">
+            Status da Assinatura: 
+            <span class="font-bold {% if current_user.is_subscribed %}text-green-600{% else %}text-red-600{% endif %}">
+                {{ current_user.subscription_status|capitalize }}
+            </span>
+        </p>
+        <p class="text-gray-600 mb-4">
+            Clique abaixo para atualizar seu método de pagamento, ver faturas ou cancelar sua assinatura.
+        </p>
+        
+        <form action="{{ url_for('payment.manage_subscription') }}" method="POST">
+            <button type="submit" class="w-full bg-gray-600 hover:bg-gray-800 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 cursor-pointer">
+                Acessar Portal do Cliente
+            </button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+

@@ -1,3 +1,4 @@
+Flask-Mail
 Flask
 Flask-SQLAlchemy
 Flask-Migrate
@@ -5,3 +6,5 @@ Flask-Login
 Flask-WTF
 python-dotenv
 psycopg2-binary
+stripe
+email_validator

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center mb-12">
+    <h1 class="text-5xl font-display text-mch-dark">Nossos Planos</h1>
+    <p class="text-xl text-gray-600 mt-2">Escolha o plano ideal para você (ou vocês)!</p>
+</div>
+
+<!-- Planos Individuais -->
+<h2 class="text-3xl font-display text-mch-dark mb-6">Planos Individuais</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+
+    <!-- Plano 1: Avulso -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+        <h3 class="text-2xl font-bold text-mch-dark mb-2">Passe Avulso</h3>
+        <p class="text-5xl font-bold text-mch-primary mb-4">R$139<span class="text-2xl">,90</span></p>
+        <p class="text-gray-500 mb-6">Pagamento único</p>
+        <ul class="text-gray-600 space-y-2 mb-8 text-center">
+            <li>✓ Acesso a 1 evento</li>
+            <li>✓ Ideal para convidados</li>
+            <li>✓ Cortes de carne premium</li>
+            <li>✓ Chope artesanal</li>
+        </ul>
+        <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="w-full mt-auto">
+            <input type="hidden" name="plan_id" value="avulso">
+            <button type="submit" class="w-full bg-gray-300 hover:bg-mch-primary hover:text-white text-mch-dark font-bold py-3 px-6 rounded-lg transition duration-300">
+                Comprar Avulso
+            </button>
+        </form>
+    </div>
+
+    <!-- Plano 2: Mensal (RECOMENDADO) -->
+    <div class="bg-mch-dark rounded-2xl shadow-2xl p-8 flex flex-col items-center ring-4 ring-mch-sun relative">
+        <span class="absolute -top-4 bg-mch-sun text-mch-dark font-bold text-sm py-1 px-4 rounded-full uppercase tracking-wider">Mais Popular</span>
+        <h3 class="text-2xl font-bold text-white mb-2">Sócio Micachurras</h3>
+        <p class="text-5xl font-bold text-mch-sun mb-4">R$119<span class="text-2xl">,90</span></p>
+        <p class="text-gray-300 mb-6">Cobrado mensalmente</p>
+        <ul class="text-gray-200 space-y-2 mb-8 text-center">
+            <li>✓ Acesso a 1 evento por mês</li>
+            <li>✓ Desconto de R$20 todo mês</li>
+            <li>✓ Cortes de carne premium</li>
+            <li>✓ Chope artesanal</li>
+        </ul>
+        <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="w-full mt-auto">
+            <input type="hidden" name="plan_id" value="mensal">
+            <button type="submit" class="w-full bg-mch-sun hover:bg-yellow-400 text-mch-dark font-bold py-3 px-6 rounded-lg transition duration-300">
+                Assinar Mensal
+            </button>
+        </form>
+    </div>
+
+    <!-- Plano 3: Anual -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+        <h3 class="text-2xl font-bold text-mch-dark mb-2">Sócio Fundador</h3>
+        <p class="text-5xl font-bold text-mch-primary mb-4">R$107<span class="text-2xl">,90</span></p>
+        <p class="text-gray-500 mb-6">Cobrado anualmente (R$1294,80)</p>
+        <ul class="text-gray-600 space-y-2 mb-8 text-center">
+            <li>✓ Acesso a 12 eventos (1 mês grátis!)</li>
+            <li>✓ Maior desconto (R$32/mês off)</li>
+            <li>✓ Cortes de carne premium</li>
+            <li>✓ Chope artesanal</li>
+        </ul>
+        <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="w-full mt-auto">
+            <input type="hidden" name="plan_id" value="anual">
+            <button type="submit" class="w-full bg-gray-300 hover:bg-mch-primary hover:text-white text-mch-dark font-bold py-3 px-6 rounded-lg transition duration-300">
+                Assinar Anual
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Planos Casal -->
+<h2 class="text-3xl font-display text-mch-dark mb-6">Planos Casal</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+
+    <!-- Plano 4: Avulso Casal -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+        <h3 class="text-2xl font-bold text-mch-dark mb-2">Passe Avulso (Casal)</h3>
+        <p class="text-5xl font-bold text-mch-primary mb-4">R$219<span class="text-2xl">,90</span></p>
+        <p class="text-gray-500 mb-6">Pagamento único para 2 pessoas</p>
+        <ul class="text-gray-600 space-y-2 mb-8 text-center">
+            <li>✓ Acesso a 1 evento para 2</li>
+            <li>✓ Economia de R$60 vs. 2 avulsos</li>
+            <li>✓ Cortes de carne premium</li>
+            <li>✓ Chope artesanal</li>
+        </ul>
+        <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="w-full mt-auto">
+            <input type="hidden" name="plan_id" value="avulso_casal">
+            <button type="submit" class="w-full bg-gray-300 hover:bg-mch-primary hover:text-white text-mch-dark font-bold py-3 px-6 rounded-lg transition duration-300">
+                Comprar Passe Casal
+            </button>
+        </form>
+    </div>
+
+    <!-- Plano 5: Mensal Casal -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+        <h3 class="text-2xl font-bold text-mch-dark mb-2">Sócio Casal</h3>
+        <p class="text-5xl font-bold text-mch-primary mb-4">R$197<span class="text-2xl">,80</span></p>
+        <p class="text-gray-500 mb-6">Cobrado mensalmente (para 2)</p>
+        <ul class="text-gray-600 space-y-2 mb-8 text-center">
+            <li>✓ Acesso a 1 evento/mês para 2</li>
+            <li>✓ Economia de R$42 vs. 2 mensais</li>
+            <li>✓ (Equivale a R$98,90 por pessoa)</li>
+            <li>✓ Cortes de carne premium</li>
+            <li>✓ Chope artesanal</li>
+        </ul>
+        <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="w-full mt-auto">
+            <input type="hidden" name="plan_id" value="mensal_casal">
+            <button type="submit" class="w-full bg-gray-300 hover:bg-mch-primary hover:text-white text-mch-dark font-bold py-3 px-6 rounded-lg transition duration-300">
+                Assinar Mensal (Casal)
+            </button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
+

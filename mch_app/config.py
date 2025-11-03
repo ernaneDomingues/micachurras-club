@@ -1,32 +1,46 @@
 import os
 from dotenv import load_dotenv
 
-# Carrega as variáveis do arquivo .env (especialmente a URL do Neon)
+# Carrega variáveis de ambiente do arquivo .env
 basedir = os.path.abspath(os.path.dirname(__file__))
-load_dotenv(os.path.join(basedir, '..', '.env')) # Sobe um nível para achar o .env
+load_dotenv(os.path.join(basedir, '..', '.env')) # Aponta para o .env na raiz
 
 class Config:
-    """Configurações base do app."""
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'voce-nunca-vai-adivinhar'
+    """Configuração base (comum a todos os ambientes)"""
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'uma-chave-secreta-muito-dificil-de-adivinhar'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+    # Configurações do Stripe
+    STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
+    STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+    STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
+    
+    # IDs dos Planos/Preços do Stripe
+    STRIPE_PRICE_ID_AVULSO = os.environ.get('STRIPE_PRICE_ID_AVULSO')
+    STRIPE_PRICE_ID_MENSAL = os.environ.get('STRIPE_PRICE_ID_MENSAL')
+    STRIPE_PRICE_ID_ANUAL = os.environ.get('STRIPE_PRICE_ID_ANUAL')
+    # IDs dos Planos/Preços do Stripe (Casal)
+    STRIPE_PRICE_ID_AVULSO_CASAL = os.environ.get('STRIPE_PRICE_ID_AVULSO_CASAL')
+    STRIPE_PRICE_ID_MENSAL_CASAL = os.environ.get('STRIPE_PRICE_ID_MENSAL_CASAL')
 
 class DevelopmentConfig(Config):
-    """Configuração de Desenvolvimento (local, com SQLite)"""
+    """Configuração de Desenvolvimento"""
     DEBUG = True
-    # Define o banco de dados local como SQLite
+    # Usa SQLite para desenvolvimento local
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, '..', 'mch_app_dev.db')
 
 class ProductionConfig(Config):
-    """Configuração de Produção (online, com Neon/PostgreSQL)"""
+    """Configuração de Produção"""
     DEBUG = False
-    # Pega a URL do banco de dados do Neon do arquivo .env
+    # Usa a URL do banco de dados do Neon (ou outro PostgreSQL)
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
-    # Nota: A URL do Neon/PostgreSQL começa com 'postgresql://...'
+    # Adicionar outras configurações de produção (ex: logging) aqui
 
-# Um dicionário para facilitar a seleção da config
+# Dicionário para selecionar a configuração por nome
 config_by_name = {
     'development': DevelopmentConfig,
     'production': ProductionConfig,
     'default': DevelopmentConfig
 }
+
