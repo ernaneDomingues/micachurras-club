@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Título dinâmico que definimos nas rotas -->
+    {% if title %}
+    <title>{{ title }} | Micachurras MCH</title>
+    {% else %}
+    <title>Micachurras MCH</title>
+    {% endif %}
+
+    <!-- Google Fonts: Nunito (corpo) e Bungee (títulos, como na camiseta) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Nosso CSS gerado pelo Tailwind -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-mch-dark text-mch-light font-sans flex flex-col min-h-full">
+
+    <!-- ===== Header / Navbar ===== -->
+    <header class="bg-mch-dark shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="{{ url_for('main.index') }}" class="font-display text-2xl font-bold text-mch-sun hover:text-mch-accent transition-colors">
+                MICÁCHURRAS MCH
+            </a>
+            
+            <!-- Links de Navegação -->
+            <div class="space-x-4">
+                <a href="{{ url_for('main.index') }}" class="hover:text-mch-accent transition-colors">Cronograma</a>
+                <!-- (Links futuros)
+                <a href="#" class="hover:text-mch-accent transition-colors">Galeria</a>
+                <a href="#" class="hover:text-mch-accent transition-colors">Pagamentos</a>
+                -->
+                <a href="{{ url_for('auth.login') }}" class="bg-mch-accent text-white font-bold py-2 px-4 rounded-full hover:bg-opacity-80 transition-all">
+                    Login
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== Conteúdo Principal ===== -->
+    <main class="flex-grow">
+        <!-- Seção para Mensagens Flash (ex: "Login com sucesso!") -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container mx-auto px-4 mt-4">
+                {% for category, message in messages %}
+                    <div class="p-4 rounded-md {{ 'bg-mch-accent' if category == 'error' else 'bg-mch-primary' }} text-white">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Bloco de conteúdo que as outras páginas irão preencher -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ===== Rodapé ===== -->
+    <footer class="bg-mch-dark mt-16 border-t border-mch-primary/20">
+        <div class="container mx-auto px-4 py-6 text-center text-mch-light/50">
+            <p>&copy; 2025 Micachurras MCH</p>
+            <p class="text-sm">Feito com 🔥, 🥩 e Python.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

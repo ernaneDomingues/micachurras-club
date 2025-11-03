@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-16">
+
+    <div class="max-w-md mx-auto bg-mch-dark border border-mch-primary/30 p-8 rounded-2xl shadow-2xl">
+        <h2 class="font-display text-4xl text-center text-mch-sun mb-8">
+            Login
+        </h2>
+        
+        <!-- Formulário agora usa Flask-WTF -->
+        <!-- O 'action' agora aponta para a rota de login para ser explícito -->
+        <form action="{{ url_for('auth.login') }}" method="POST" novalidate>
+            {{ form.hidden_tag() }} <!-- Proteção CSRF -->
+            
+            <!-- Campo Email -->
+            <div class="mb-4">
+                <!-- Label vindo do formulário WTForms -->
+                {{ form.email.label(class="block text-sm font-bold text-mch-light/80 mb-2") }}
+                
+                <!-- Input renderizado pelo WTForms, com nossas classes do Tailwind -->
+                {{ form.email(class="w-full px-4 py-2 bg-mch-dark border border-mch-primary/50 rounded-lg text-mch-light focus:outline-none focus:ring-2 focus:ring-mch-accent") }}
+                
+                <!-- Exibe erros de validação para este campo -->
+                {% for error in form.email.errors %}
+                    <span class="text-mch-accent text-sm mt-1">{{ error }}</span>
+                {% endfor %}
+            </div>
+            
+            <!-- Campo Senha -->
+            <div class="mb-6">
+                {{ form.password.label(class="block text-sm font-bold text-mch-light/80 mb-2") }}
+
+                {{ form.password(class="w-full px-4 py-2 bg-mch-dark border border-mch-primary/50 rounded-lg text-mch-light focus:outline-none focus:ring-2 focus:ring-mch-accent") }}
+                
+                <!-- Exibe erros de validação para este campo -->
+                {% for error in form.password.errors %}
+                    <span class="text-mch-accent text-sm mt-1">{{ error }}</span>
+                {% endfor %}
+            </div>
+            
+            <!-- Lembrar-me e Esqueceu a senha -->
+            <div class="flex items-center justify-between mb-6">
+                <label class="flex items-center text-sm text-mch-light/70">
+                    <!-- Checkbox renderizado pelo WTForms -->
+                    {{ form.remember_me(class="rounded text-mch-accent focus:ring-mch-accent border-mch-primary/50 bg-mch-dark") }}
+                    <span class="ml-2">{{ form.remember_me.label.text }}</span>
+                </label>
+                <a href="#" class="text-sm text-mch-accent/80 hover:text-mch-accent">Esqueceu a senha?</a>
+            </div>
+            
+            <!-- Botão de Submit -->
+            <div>
+                <!-- Botão de submit renderizado pelo WTForms -->
+                {{ form.submit(class="w-full bg-mch-sun text-mch-dark font-bold text-lg py-3 px-6 rounded-full shadow-lg hover:scale-105 transition-transform cursor-pointer") }}
+            </div>
+        </form>
+        
+        <!-- Link para Registro -->
+        <div class="text-center mt-6">
+            <p class="text-mch-light/70">
+                Não tem uma conta?
+                <a href="{{ url_for('auth.register') }}" class="font-bold text-mch-accent hover:underline">
+                    Registre-se aqui!
+                </a>
+            </p>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+

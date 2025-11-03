@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- ===== Seção Hero (com o gradiente da camiseta) ===== -->
+<div class="w-full text-white bg-gradient-to-b from-mch-primary to-mch-dark py-24 md:py-32">
+    <div class="container mx-auto px-4 text-center">
+        
+        <!-- Título principal com a fonte 'Bungee' -->
+        <h1 class="font-display text-5xl md:text-7xl font-extrabold text-mch-accent drop-shadow-lg" style="text-shadow: 2px 2px #00000040;">
+            MICÁCHURRAS
+        </h1>
+        
+        <!-- Subtítulo -->
+        <h2 class="font-sans text-3xl md:text-5xl font-bold text-mch-sun mt-2 drop-shadow-md">
+            DO MARJAÔRA
+        </h2>
+        
+        <p class="text-xl md:text-2xl mt-6 max-w-2xl mx-auto text-mch-light/90">
+            O hub oficial do nosso grupo de churrasco. Veja o cronograma, confirme sua presença e gerencie seus pagamentos.
+        </p>
+        
+        <!-- Call to Action (Botão Principal) -->
+        <a href="#proximo-evento" class="mt-10 inline-block bg-mch-sun text-mch-dark font-bold text-lg py-3 px-8 rounded-full shadow-xl hover:scale-105 transition-transform">
+            Ver Próximo Evento
+        </a>
+    </div>
+</div>
+
+<!-- ===== Seção "Próximo Evento" ===== -->
+<div id="proximo-evento" class="container mx-auto px-4 mt-16">
+    <h3 class="font-display text-4xl text-center text-mch-sun mb-8">
+        Próximo Churras
+    </h3>
+    
+    <!-- Card do Evento (Aqui virão os dados do banco) -->
+    <div class="max-w-2xl mx-auto bg-mch-primary/10 border border-mch-primary/30 p-8 rounded-2xl shadow-lg">
+        
+        <div class="text-center">
+            <p class="text-lg text-mch-light/70">Sábado, 29 de Novembro</p>
+            <h4 class="text-3xl font-bold text-mch-accent mt-2">
+                Churrasco de Fim de Ano
+            </h4>
+            
+            <p class="text-xl text-mch-sun font-bold mt-4">
+                Local: Chácara do Marjaôra
+            </p>
+            
+            <p class="text-md mt-4 text-mch-light">
+                O evento de encerramento do ano! Teremos costela fogo de chão, picanha e a tradicional seleção de cervejas artesanais.
+            </p>
+            
+            <a href="{{ url_for('auth.login') }}" class="mt-8 inline-block bg-mch-accent text-white font-bold py-3 px-6 rounded-full hover:bg-opacity-80 transition-all">
+                Confirmar Presença (R$ 100,00)
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
