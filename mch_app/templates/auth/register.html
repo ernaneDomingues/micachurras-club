@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-16">
+
+    <div class="max-w-md mx-auto bg-mch-dark border border-mch-primary/30 p-8 rounded-2xl shadow-2xl">
+        <h2 class="font-display text-4xl text-center text-mch-sun mb-8">
+            Criar Conta
+        </h2>
+        
+        <form action="{{ url_for('auth.register') }}" method="POST" novalidate>
+            {{ form.hidden_tag() }} <!-- Proteção CSRF -->
+            
+            <!-- Campo Nome -->
+            <div class="mb-4">
+                {{ form.nome.label(class="block text-sm font-bold text-mch-light/80 mb-2") }}
+                {{ form.nome(class="w-full px-4 py-2 bg-mch-dark border border-mch-primary/50 rounded-lg text-mch-light focus:outline-none focus:ring-2 focus:ring-mch-accent") }}
+                {% for error in form.nome.errors %}
+                    <span class="text-mch-accent text-sm mt-1">{{ error }}</span>
+                {% endfor %}
+            </div>
+            
+            <!-- Campo Email -->
+            <div class="mb-4">
+                {{ form.email.label(class="block text-sm font-bold text-mch-light/80 mb-2") }}
+                {{ form.email(class="w-full px-4 py-2 bg-mch-dark border border-mch-primary/50 rounded-lg text-mch-light focus:outline-none focus:ring-2 focus:ring-mch-accent") }}
+                {% for error in form.email.errors %}
+                    <span class="text-mch-accent text-sm mt-1">{{ error }}</span>
+                {% endfor %}
+            </div>
+            
+            <!-- NOVOS CAMPOS ADICIONADOS -->
+            
+            <!-- Campo Data de Nascimento -->
+            <div class="mb-4">
+                {{ form.data_nascimento.label(class="block text-sm font-bold text-mch-light/80 mb-2") }}
+                <!-- Note o 'type="date"' -->
+                {{ form.data_nascimento(class="w-full px-4 py-2 bg-mch-dark border border-mch-primary/50 rounded-lg text-mch-light focus:outline-none focus:ring-2 focus:ring-mch-accent", type="date") }}
+                {% for error in form.data_nascimento.errors %}
+                    <span class="text-mch-accent text-sm mt-1">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <!-- Campo Telefone -->
+            <div class="mb-4">
+                {{ form.telefone.label(class="block text-sm font-bold text-mch-light/80 mb-2") }}
+                {{ form.telefone(class="w-full px-4 py-2 bg-mch-dark border border-mch-primary/50 rounded-lg text-mch-light focus:outline-none focus:ring-2 focus:ring-mch-accent") }}
+                {% for error in form.telefone.errors %}
+                    <span class="text-mch-accent text-sm mt-1">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <!-- Campo Bloco (Select) -->
+            <div class="mb-4">
+                {{ form.bloco.label(class="block text-sm font-bold text-mch-light/80 mb-2") }}
+                {{ form.bloco(class="w-full px-4 py-2 bg-mch-dark border border-mch-primary/50 rounded-lg text-mch-light focus:outline-none focus:ring-2 focus:ring-mch-accent") }}
+                {% for error in form.bloco.errors %}
+                    <span class="text-mch-accent text-sm mt-1">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <!-- Campo Apartamento -->
+            <div class="mb-4">
+                {{ form.apartamento.label(class="block text-sm font-bold text-mch-light/80 mb-2") }}
+                {{ form.apartamento(class="w-full px-4 py-2 bg-mch-dark border border-mch-primary/50 rounded-lg text-mch-light focus:outline-none focus:ring-2 focus:ring-mch-accent") }}
+                {% for error in form.apartamento.errors %}
+                    <span class="text-mch-accent text-sm mt-1">{{ error }}</span>
+                {% endfor %}
+            </div>
+            
+            <!-- FIM DOS NOVOS CAMPOS -->
+            
+            <!-- Campo Senha -->
+            <div class="mb-6">
+                {{ form.password.label(class="block text-sm font-bold text-mch-light/80 mb-2") }}
+                {{ form.password(class="w-full px-4 py-2 bg-mch-dark border border-mch-primary/50 rounded-lg text-mch-light focus:outline-none focus:ring-2 focus:ring-mch-accent") }}
+                {% for error in form.password.errors %}
+                    <span class="text-mch-accent text-sm mt-1">{{ error }}</span>
+                {% endfor %}
+            </div>
+            
+            <!-- Campo Confirmar Senha -->
+            <div class="mb-6">
+                {{ form.password2.label(class="block text-sm font-bold text-mch-light/80 mb-2") }}
+                {{ form.password2(class="w-full px-4 py-2 bg-mch-dark border border-mch-primary/50 rounded-lg text-mch-light focus:outline-none focus:ring-2 focus:ring-mch-accent") }}
+                {% for error in form.password2.errors %}
+                    <span class="text-mch-accent text-sm mt-1">{{ error }}</span>
+                {% endfor %}
+            </div>
+            
+            <!-- Botão de Submit -->
+            <div>
+                {{ form.submit(class="w-full bg-mch-sun text-mch-dark font-bold text-lg py-3 px-6 rounded-full shadow-lg hover:scale-105 transition-transform cursor-pointer") }}
+            </div>
+        </form>
+        
+        <!-- Link para Login -->
+        <div class="text-center mt-6">
+            <p class="text-mch-light/70">
+                Já tem uma conta?
+                <a href="{{ url_for('auth.login') }}" class="font-bold text-mch-accent hover:underline">
+                    Faça o login!
+                </a>
+            </p>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+
