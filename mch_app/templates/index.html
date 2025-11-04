@@ -2,19 +2,21 @@
 
 {% block content %}
 <!-- Seção Hero -->
-<div class="relative bg-mch-dark text-white py-40 px-6 rounded-2xl shadow-2xl overflow-hidden -mt-4">
+<div class="relative bg-mch-dark text-white py-32 px-6 rounded-2xl shadow-2xl overflow-hidden -mt-4">
     <!-- Imagem de Fundo com Overlay Escuro -->
     <div class="absolute inset-0 z-0">
-        <img src="https://placehold.co/1200x600/000000/FFF?text=Foto+de+Churrasco+Aqui" 
+        <img src="{{ url_for('static', filename='images/grupo.jpg') }}" 
              alt="Churrasco" 
              class="w-full h-full object-cover opacity-30">
         <div class="absolute inset-0 bg-gradient-to-t from-mch-dark via-mch-dark/70 to-transparent"></div>
     </div>
     
     <div class="relative z-10 text-center">
-        <h1 class="text-6xl md:text-8xl font-display text-mch-sun mb-4 drop-shadow-lg">
-            MICACHURRAS
-        </h1>
+        <!-- SUBSTITUÍMOS o texto "MICACHURRAS" pelo seu novo logo oficial -->
+        <img src="{{ url_for('static', filename='images/mch_logo_full.jpg') }}" 
+             alt="Logo Micachurras MCH" 
+             class="w-full max-w-lg mx-auto mb-8 drop-shadow-lg">
+             
         <p class="text-2xl md:text-3xl font-bold font-sans text-white mb-8 drop-shadow-md">
             O clube de churrasco oficial do condomínio!
         </p>

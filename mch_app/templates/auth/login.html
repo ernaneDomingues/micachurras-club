@@ -3,6 +3,12 @@
 {% block content %}
 <div class="flex justify-center">
     <div class="w-full max-w-lg bg-white p-8 rounded-2xl shadow-lg">
+        
+        <!-- Logo Adicionado -->
+        <div class="w-full max-w-xs mx-auto mb-6">
+            <img src="{{ url_for('static', filename='images/mch_logo_full.jpg') }}" alt="Logo Micachurras MCH">
+        </div>
+        
         <h2 class="text-3xl font-bold text-center text-mch-dark mb-6">Login</h2>
         
         <form action="{{ url_for('auth.login') }}" method="POST" novalidate>
@@ -49,3 +55,4 @@
     </div>
 </div>
 {% endblock %}
+
