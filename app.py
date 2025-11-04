@@ -8,7 +8,8 @@ config_name = os.getenv('FLASK_CONFIG', 'development')
 app = create_app(config_name)
 
 # Configura o Flask-Migrate
-migrate = Migrate(app, db)
+# Adiciona o 'db' ao metadata para o Alembic detectar mudanças em tabelas
+migrate = Migrate(app, db, render_as_batch=True)
 
 # Adiciona o contexto do shell para 'flask shell'
 @app.shell_context_processor
@@ -21,4 +22,3 @@ def make_shell_context():
 
 if __name__ == '__main__':
     app.run()
-

@@ -11,15 +11,16 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
 
     <!-- Plano 1: Avulso -->
-    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+        <svg class="w-16 h-16 text-mch-primary mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+        </svg>
         <h3 class="text-2xl font-bold text-mch-dark mb-2">Passe Avulso</h3>
         <p class="text-5xl font-bold text-mch-primary mb-4">R$139<span class="text-2xl">,90</span></p>
         <p class="text-gray-500 mb-6">Pagamento único</p>
         <ul class="text-gray-600 space-y-2 mb-8 text-center">
             <li>✓ Acesso a 1 evento</li>
             <li>✓ Ideal para convidados</li>
-            <li>✓ Cortes de carne premium</li>
-            <li>✓ Chope artesanal</li>
         </ul>
         <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="w-full mt-auto">
             <input type="hidden" name="plan_id" value="avulso">
@@ -30,16 +31,17 @@
     </div>
 
     <!-- Plano 2: Mensal (RECOMENDADO) -->
-    <div class="bg-mch-dark rounded-2xl shadow-2xl p-8 flex flex-col items-center ring-4 ring-mch-sun relative">
+    <div class="bg-mch-dark rounded-2xl shadow-2xl p-8 flex flex-col items-center ring-4 ring-mch-sun relative transition-transform duration-300 hover:scale-105">
         <span class="absolute -top-4 bg-mch-sun text-mch-dark font-bold text-sm py-1 px-4 rounded-full uppercase tracking-wider">Mais Popular</span>
+        <svg class="w-16 h-16 text-mch-sun mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+        </svg>
         <h3 class="text-2xl font-bold text-white mb-2">Sócio Micachurras</h3>
         <p class="text-5xl font-bold text-mch-sun mb-4">R$119<span class="text-2xl">,90</span></p>
         <p class="text-gray-300 mb-6">Cobrado mensalmente</p>
         <ul class="text-gray-200 space-y-2 mb-8 text-center">
             <li>✓ Acesso a 1 evento por mês</li>
             <li>✓ Desconto de R$20 todo mês</li>
-            <li>✓ Cortes de carne premium</li>
-            <li>✓ Chope artesanal</li>
         </ul>
         <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="w-full mt-auto">
             <input type="hidden" name="plan_id" value="mensal">
@@ -50,15 +52,16 @@
     </div>
 
     <!-- Plano 3: Anual -->
-    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+        <svg class="w-16 h-16 text-mch-primary mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.504-1.125-1.125-1.125h-6.75c-.621 0-1.125.504-1.125 1.125v3.375m9 0h-9" />
+        </svg>
         <h3 class="text-2xl font-bold text-mch-dark mb-2">Sócio Fundador</h3>
         <p class="text-5xl font-bold text-mch-primary mb-4">R$107<span class="text-2xl">,90</span></p>
         <p class="text-gray-500 mb-6">Cobrado anualmente (R$1294,80)</p>
         <ul class="text-gray-600 space-y-2 mb-8 text-center">
             <li>✓ Acesso a 12 eventos (1 mês grátis!)</li>
             <li>✓ Maior desconto (R$32/mês off)</li>
-            <li>✓ Cortes de carne premium</li>
-            <li>✓ Chope artesanal</li>
         </ul>
         <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="w-full mt-auto">
             <input type="hidden" name="plan_id" value="anual">
@@ -70,19 +73,20 @@
 </div>
 
 <!-- Planos Casal -->
-<h2 class="text-3xl font-display text-mch-dark mb-6">Planos Casal</h2>
+<h2 class="text-3xl font-display text-mch-dark mb-6 mt-16">Planos Casal</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
 
     <!-- Plano 4: Avulso Casal -->
-    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+        <svg class="w-16 h-16 text-mch-primary mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m-4.682 2.72a.75.75 0 01-.729.533A7.47 7.47 0 0112 15c-2.226 0-4.303.99-5.74 2.542a.75.75 0 01-.729-.533m10.257 0a3 3 0 00-4.682-2.72M12 12A3.75 3.75 0 1012 4.5 3.75 3.75 0 0012 12zM3.75 13.5a.75.75 0 000 1.5h.75a6.75 6.75 0 0011.25 0h.75a.75.75 0 000-1.5h-.75a6.75 6.75 0 00-11.25 0H3.75z" />
+        </svg>
         <h3 class="text-2xl font-bold text-mch-dark mb-2">Passe Avulso (Casal)</h3>
         <p class="text-5xl font-bold text-mch-primary mb-4">R$219<span class="text-2xl">,90</span></p>
         <p class="text-gray-500 mb-6">Pagamento único para 2 pessoas</p>
         <ul class="text-gray-600 space-y-2 mb-8 text-center">
             <li>✓ Acesso a 1 evento para 2</li>
             <li>✓ Economia de R$60 vs. 2 avulsos</li>
-            <li>✓ Cortes de carne premium</li>
-            <li>✓ Chope artesanal</li>
         </ul>
         <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="w-full mt-auto">
             <input type="hidden" name="plan_id" value="avulso_casal">
@@ -93,7 +97,10 @@
     </div>
 
     <!-- Plano 5: Mensal Casal -->
-    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+    <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+        <svg class="w-16 h-16 text-mch-primary mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+        </svg>
         <h3 class="text-2xl font-bold text-mch-dark mb-2">Sócio Casal</h3>
         <p class="text-5xl font-bold text-mch-primary mb-4">R$197<span class="text-2xl">,80</span></p>
         <p class="text-gray-500 mb-6">Cobrado mensalmente (para 2)</p>
@@ -101,12 +108,10 @@
             <li>✓ Acesso a 1 evento/mês para 2</li>
             <li>✓ Economia de R$42 vs. 2 mensais</li>
             <li>✓ (Equivale a R$98,90 por pessoa)</li>
-            <li>✓ Cortes de carne premium</li>
-            <li>✓ Chope artesanal</li>
         </ul>
         <form action="{{ url_for('payment.create_checkout_session') }}" method="POST" class="w-full mt-auto">
             <input type="hidden" name="plan_id" value="mensal_casal">
-            <button type="submit" class="w-full bg-gray-300 hover:bg-mch-primary hover:text-white text-mch-dark font-bold py-3 px-6 rounded-lg transition duration-300">
+            <button type="submit" classa="w-full bg-gray-300 hover:bg-mch-primary hover:text-white text-mch-dark font-bold py-3 px-6 rounded-lg transition duration-300">
                 Assinar Mensal (Casal)
             </button>
         </form>

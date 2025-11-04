@@ -4,5 +4,6 @@ from . import main
 @main.route('/')
 @main.route('/index')
 def index():
-    """Rota para a página inicial."""
+    """Route for the homepage."""
     return render_template('index.html', title='Início')
+

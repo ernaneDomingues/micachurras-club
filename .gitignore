@@ -205,3 +205,36 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+Ambientes Virtuais
+
+venv/
+.env
+env/
+
+Arquivos de Cache do Python
+
+*.pyc
+pycache/
+*.py[cod]
+
+Banco de Dados
+
+*.db
+*.sqlite
+*.sqlite3
+mch_app_dev.db
+
+Dependências do Node
+
+node_modules/
+
+Arquivos de Build
+
+/mch_app/static/css/style.css
+
+Arquivos de SO
+
+.DS_Store
+Thumbs.db

@@ -53,6 +53,8 @@ class RegistrationForm(FlaskForm):
 
     def validate_birth_date(self, birth_date):
         """Verifica se o usuário é maior de 18 anos."""
+        if not birth_date.data:
+            raise ValidationError('A data de nascimento é obrigatória.')
         today = date.today()
         age = today.year - birth_date.data.year - \
               ((today.month, today.day) < (birth_date.data.month, birth_date.data.day))

@@ -1,3 +1,4 @@
+import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -13,7 +14,7 @@ login_manager = LoginManager()
 # Configura o Flask-Login
 # Para onde o usuário será redirecionado se tentar acessar uma página protegida
 login_manager.login_view = 'auth.login'
-# Mensagem mostrada ao ser redirecionado
+# Mensagem mostrada ao ser redirecionado (em português)
 login_manager.login_message = 'Por favor, faça o login para acessar esta página.'
 login_manager.login_message_category = 'info' # Categoria para 'flash'
 
@@ -27,9 +28,14 @@ def create_app(config_name='default'):
     # Carrega a configuração (DevelopmentConfig ou ProductionConfig)
     app.config.from_object(config_by_name[config_name])
 
+    # Configura o logging
+    if not app.debug:
+        app.logger.setLevel(logging.INFO)
+
     # Inicializa as extensões com o app
     db.init_app(app)
-    migrate.init_app(app, db) # Vincula o migrate ao app e ao db
+    # Habilita 'render_as_batch' para o SQLite
+    migrate.init_app(app, db, render_as_batch=True) 
     login_manager.init_app(app)
 
     # --- Registro dos Blueprints ---
@@ -56,5 +62,6 @@ def create_app(config_name='default'):
         """Injeta o ano atual em todos os templates."""
         return {'current_year': datetime.utcnow().year}
 
+    app.logger.info("Aplicativo Micachurras MCH criado com sucesso.")
     return app
 

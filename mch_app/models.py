@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(256))
     birth_date = db.Column(db.Date, nullable=False)
     phone = db.Column(db.String(20))
-    building_block = db.Column(db.String(50)) # Ex: "Bloco A - Lírio"
+    building_block = db.Column(db.String(50)) # Ex: "A"
     apartment_number = db.Column(db.String(10))
     
     # --- Campos do Stripe ---
@@ -70,9 +70,9 @@ class Subscription(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, index=True)
-    plan_name = db.Column(db.String(50)) # Ex: Mensal, Anual
+    plan_name = db.Column(db.String(50)) # Ex: Mensal, Anual, Mensal Casal
     start_date = db.Column(db.DateTime, default=datetime.utcnow)
-    end_date = db.Column(db.DateTime) # Nulo para planos ativos
+    end_date = db.Column(db.DateTime) # Data de fim do período de cobrança
     status = db.Column(db.String(50), default='ativo') # Ex: ativo, cancelado, pendente
 
     # --- Relacionamentos ---

@@ -8,7 +8,7 @@ import stripe
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    """Rota de Login."""
+    """Login route."""
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     
@@ -22,7 +22,7 @@ def login():
         login_user(user, remember=form.remember_me.data)
         flash('Login realizado com sucesso!', 'success')
         
-        # Redireciona para a próxima página (se houver) ou para o index
+        # Redirect to the next page if it exists
         next_page = request.args.get('next')
         if not next_page or not next_page.startswith('/'):
             next_page = url_for('main.index')
@@ -32,31 +32,31 @@ def login():
 
 @auth.route('/logout')
 def logout():
-    """Rota de Logout."""
+    """Logout route."""
     logout_user()
     flash('Você foi desconectado.', 'info')
     return redirect(url_for('main.index'))
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    """Rota de Registro."""
+    """Registration route."""
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
         
     form = RegistrationForm()
     if form.validate_on_submit():
         try:
-            # Configura a chave da API do Stripe
+            # Set Stripe API key
             stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
             
-            # Cria o cliente no Stripe
+            # Create a new Customer object in Stripe
             customer = stripe.Customer.create(
                 name=form.name.data,
                 email=form.email.data.lower(),
                 phone=form.phone.data
             )
             
-            # Cria o usuário no banco de dados local
+            # Create new user in local database
             user = User(
                 name=form.name.data,
                 email=form.email.data.lower(),
@@ -64,7 +64,7 @@ def register():
                 phone=form.phone.data,
                 building_block=form.building_block.data,
                 apartment_number=form.apartment_number.data,
-                stripe_customer_id=customer.id  # Salva o ID do cliente Stripe
+                stripe_customer_id=customer.id  # Save the Stripe Customer ID
             )
             user.set_password(form.password.data)
             
@@ -76,9 +76,11 @@ def register():
         
         except stripe.error.StripeError as e:
             db.session.rollback()
+            current_app.logger.error(f"Stripe error during registration: {e}")
             flash(f'Erro ao criar cliente de pagamento: {e}', 'danger')
         except Exception as e:
             db.session.rollback()
+            current_app.logger.error(f"Generic error during registration: {e}")
             flash(f'Erro ao registrar: {e}', 'danger')
             
     return render_template('auth/register.html', title='Registrar', form=form)

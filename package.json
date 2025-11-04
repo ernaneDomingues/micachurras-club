@@ -1,13 +1,21 @@
 {
-    "name": "mch_app",
-    "version": "1.0.0",
-    "description": "Frontend para o Micachurras",
-    "scripts": {
-      "dev": "tailwindcss -i ./mch_app/static/css/input.css -o ./mch_app/static/css/style.css --watch",
-      "build": "tailwindcss -i ./mch_app/static/css/input.css -o ./mch_app/static/css/style.css --minify"
-    },
-    "devDependencies": {
-      "tailwindcss": "^3.4.1"
-    }
+  "name": "micachurras-club",
+  "version": "1.0.0",
+  "description": "Sistema de gerenciamento para o Micachurras MCH",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tailwindcss -i ./mch_app/static/css/input.css -o ./mch_app/static/css/style.css --watch"
+  },
+  "keywords": [
+    "flask",
+    "tailwind",
+    "stripe"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "tailwindcss": "^3.4.1"
   }
-  
+}
+

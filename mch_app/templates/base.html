@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" class="h-full bg-gray-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,17 +10,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Stripe.js (necessário para checkout) -->
+    <!-- Stripe.js -->
     <script src="https://js.stripe.com/v3/"></script>
 </head>
-<body class="bg-gray-100 font-sans text-gray-900 antialiased">
+<body class="h-full flex flex-col font-sans text-gray-900 antialiased">
     
     <!-- Header -->
-    <header class="bg-mch-dark text-white shadow-md">
+    <header class="bg-mch-dark text-white shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-4 py-4 flex flex-wrap justify-between items-center">
-            <!-- Logo -->
-            <a href="{{ url_for('main.index') }}" class="text-3xl font-display font-bold text-mch-sun hover:text-mch-accent transition duration-300">
-                MICACHURRAS
+            
+            <!-- Logo com Ícone de Chama -->
+            <a href="{{ url_for('main.index') }}" class="flex items-center space-x-2">
+                <!-- Ícone de Chama SVG -->
+                <svg class="w-8 h-8 text-mch-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.963 2.286a.75.75 0 00-1.071-.136 9.742 9.742 0 00-3.527 1.126C6.304 4.511 4.777 6.734 4.777 9.5c0 2.62 1.32 4.957 3.33 6.44a.75.75 0 00.942-.099c.4-.401.646-.98.71-1.668.064-.687.08-1.393.08-2.131 0-.834-.025-1.668-.078-2.493a.75.75 0 00-.212-.518c-.26-.26-.648-.363-.96-.363H6.375a.75.75 0 010-1.5h1.163c1.68 0 3.038.82 3.868 2.054.712-1.06 1.83-1.744 3.038-1.744h.08a.75.75 0 00.742-.668 12.69 12.69 0 00.056-2.16c0-.82-.02-1.632-.058-2.425a.75.75 0 00-.142-.475L12.963 2.286zM12 1.5c.24 0 .47.09.64.256l.004.003.004.003.003.004a.75.75 0 01.136 1.071 11.239 11.239 0 01-1.42 2.39C10.23 6.64 9.274 7.5 8.125 7.5H7.875a.75.75 0 010-1.5h.25c.563 0 1.082-.22 1.472-.61a.75.75 0 01.518-.212c.053.82.078 1.654.078 2.488 0 .738-.016 1.444-.08 2.131a.75.75 0 01-.71 1.668.75.75 0 00-.942.1 4.96 4.96 0 00-2.85 4.342 6.393 6.393 0 00.905 3.22c.28.46.714.83 1.213 1.085a.75.75 0 00.864-.17 25.303 25.303 0 002.484-2.417.75.75 0 00.114-.42c-.012-.315-.022-.631-.022-.949 0-.805.025-1.61.076-2.408.06-.946.183-1.84.368-2.682a.75.75 0 01.64-.542h.08c.962 0 1.81.52 2.422 1.332a.75.75 0 00.97.02c.316-.25.594-.53.832-.828.18-.222.34-.458.478-.71.05-.093.09-.19.118-.29a.75.75 0 00-.332-.81c-.34-.165-.708-.29-1.09-.374-.08-.018-.16-.033-.24-.047a14.19 14.19 0 01-2.91-1.037 11.239 11.239 0 01-2.288-1.924.75.75 0 01-.136-1.07L11.36 1.756A.75.75 0 0112 1.5z" clip-rule="evenodd" />
+                </svg>
+                <span class="text-3xl font-display font-bold text-mch-sun hover:text-mch-accent transition duration-300">
+                    MICACHURRAS
+                </span>
             </a>
             
             <!-- Links da Navegação -->
@@ -40,15 +47,28 @@
     </header>
 
     <!-- Conteúdo Principal -->
-    <main class="container mx-auto px-4 py-8 min-h-screen">
+    <main class="flex-grow container mx-auto px-4 py-8">
         
-        <!-- Mensagens Flash -->
+        <!-- Mensagens Flash (Melhoradas) -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div class="mb-4">
+                <div class="mb-4 max-w-4xl mx-auto space-y-3">
                     {% for category, message in messages %}
-                        {% set color = 'blue' if category == 'info' else 'green' if category == 'success' else 'red' if category == 'danger' else 'yellow' %}
-                        <div class="bg-{{ color }}-100 border-l-4 border-{{ color }}-500 text-{{ color }}-700 p-4 rounded-lg" role="alert">
+                        {% set color_map = {
+                            'info': 'blue',
+                            'success': 'green',
+                            'danger': 'red',
+                            'warning': 'yellow'
+                        } %}
+                        {% set color = color_map.get(category, 'gray') %}
+                        <div class="bg-{{ color }}-100 border-l-4 border-{{ color }}-500 text-{{ color }}-800 p-4 rounded-lg shadow" role="alert">
+                            <p class="font-bold">
+                                {% if category == 'success' %}Sucesso!
+                                {% elif category == 'danger' %}Erro!
+                                {% elif category == 'info' %}Aviso:
+                                {% elif category == 'warning' %}Atenção:
+                                {% endif %}
+                            </p>
                             <p>{{ message }}</p>
                         </div>
                     {% endfor %}
